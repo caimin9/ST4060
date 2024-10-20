@@ -47,24 +47,40 @@ B = 100
 set.seed(6040)
 int = pval = eff = numeric(B)
 for(b in 1:B){
-	ib = sample(1:nrow(dat), nrow(dat), replace=TRUE)
-	xb = dat[ib,]
-	lmb = lm(mpg~wt, data=xb)
-	int[b] = summary(lmb)$coef[1,1]
-	eff[b] = summary(lmb)$coef[2,1]
-	pval[b] = summary(lmb)$coef[2,4]
+	ib = sample(1:nrow(dat), nrow(dat), replace=TRUE) #this is just giving us indices
+	xb = dat[ib,] #here we take all the rows corresponding to those indices
+	lmb = lm(mpg~wt, data=xb) # then just make a model on those data points
+	int[b] = summary(lmb)$coef[1,1] #intercept
+	eff[b] = summary(lmb)$coef[2,1] #slope
+	pval[b] = summary(lmb)$coef[2,4] # p values
 }
 # (a)
 mean(eff)
-# (b)
+
+# (b) #naive confidence interval
+#Use quantiles for C.I to avoid assuming a theoretical distn of the data
+#For naive C.I, it treats the empirical distribution of the bootstrap samples as if it perfectly reflects the true distribution of the estimator.
+#Assumes Symmetry and No Bias Correction: 
+	#The naive approach doesn’t necessarily take into account the potential bias of the estimator or whether the bootstrapped distribution is symmetric.
+	#In cases where there is bias or significant skewness, the naive method can yield misleading intervals.
 quantile(pval,c(.025,.975))
-# (c)
+
+# (c) #Appropriate confidence interval
+# The appropriate confidence interval uses a bias correction approach. 
+#It effectively centers the confidence interval by adjusting for any asymmetry or bias in the bootstrap distribution, 
+# which makes it more reliable when dealing with potentially biased estimators or skewed data. 
+#This correction provides a more robust estimate compared to the naive method.
 lm0 = lm(mpg~wt, data=dat)
 eff0 = summary(lm0)$coefficients[2,1]
 2*eff0-rev(quantile(eff,c(.025,.975)))
+
 # (d)
+#xbar +- 1.96*std error
+#The bootstrap confidence interval does not assume normality and may be more robust in cases where the data deviates from normality.
+#However, in this case, if the intervals are similar, it suggests that the normality assumption might be reasonable for this dataset
 se0 = summary(lm0)$coefficients[2,2]
 eff0 + c(-1,1)*1.96*se0
+
 # (e)
 # The parametric CI is quite different. 
 par(mfrow=c(1,2))
