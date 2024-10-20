@@ -1,3 +1,14 @@
+#Question 1
+a) the std dev sigma_K of K(.) depends on the choice of a kernel function; it maybe convenient for K to have unit variance,
+i.e. sigma_K = 1, as is the case with the Gaussian Kernel
+b) K_h(.) has std dev(i.e. scale) hsigma_K. If K is the gaussian kernel, this std dev is h.
+c) No, since it's not a pdf (does not integrate to 1, since we're missing 1/sqrt(2*pi)
+d) Smaller bias is achieved with under smoothing: Use smaller bandwidth h1
+
+
+
+
+
 # ------------------------------------------------------------------
 # Question 2
 
