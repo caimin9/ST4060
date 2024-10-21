@@ -73,37 +73,41 @@ mylm(faithful$waiting, faithful$eruptions, DOPLOT=TRUE)
 
 
 # Define the constants and parameters
-N <- 100
+# Define parameters
 theta0 <- 3
 theta1 <- 1.5
 X <- c(1, 2, 5, 5.5, 9)
+sigma <- 1.2
 weights <- c(0.1, 0.1, 0.35, 0.35, 0.1)
+N <- 100
 
-# Extend X to match the required number of observations by repeating it
-X_full <- rep(X, length.out = N)
+# Simulate data
+set.seed(123) # For reproducibility
+epsilon <- rnorm(N, mean = 0, sd = sigma)
+Y <- theta0 + theta1 * rep(X, length.out = N) + epsilon
 
-# Initialize containers for the OLS and WLS results
-ols_results <- numeric(N)
-wls_results <- numeric(N)
+# Fit Ordinary Least Squares (OLS)
+ols_model <- lm(Y ~ rep(X, length.out = N))
 
-# Perform the simulation and analysis
-set.seed(123)  # for reproducibility
-for (i in 1:N) {
-  epsilon <- rnorm(length(X_full), mean = 0, sd = 1.2)
-  Y <- theta0 + theta1 * X_full + epsilon
+# Fit Weighted Least Squares (WLS)
+wls_model <- lm(Y ~ rep(X, length.out = N), weights = rep(weights, length.out = N))
 
-  # Ordinary Least Squares Estimation
-  ols_model <- lm(Y ~ X_full - 1)  # '-1' to omit the intercept since it's already included
-  ols_results[i] <- coefficients(ols_model)
+# Display summaries for both models
+summary_ols <- summary(ols_model)
+summary_wls <- summary(wls_model)
 
-  # Weighted Least Squares Estimation
-  wls_model <- lm(Y ~ X_full - 1, weights = rep(weights, length.out = N))
-  wls_results[i] <- coefficients(wls_model)
-}
+# Output results
+print("OLS Results:")
+print(summary_ols)
 
-# To view results
-mean(ols_results)  # Averaged result of OLS estimations
-mean(wls_results)  # Averaged result of WLS estimations
+print("WLS Results:")
+print(summary_wls)
+
+# Comparing parameter estimates
+cat("Comparison of Parameter Estimates:\n")
+cat("OLS Intercept:", summary_ols$coefficients[1,1], "WLS Intercept:", summary_wls$coefficients[1,1], "\n")
+cat("OLS Slope:", summary_ols$coefficients[2,1], "WLS Slope:", summary_wls$coefficients[2,1], "\n")
+
 
 
 
