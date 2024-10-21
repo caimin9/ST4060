@@ -108,8 +108,10 @@ cat("Comparison of Parameter Estimates:\n")
 cat("OLS Intercept:", summary_ols$coefficients[1,1], "WLS Intercept:", summary_wls$coefficients[1,1], "\n")
 cat("OLS Slope:", summary_ols$coefficients[2,1], "WLS Slope:", summary_wls$coefficients[2,1], "\n")
 
+#----------------------------------------------------------------------------------------------------------------------
 
 # can also do the question this way
+# Set the parameters and data
 # Set the parameters and data
 theta0 <- 3
 theta1 <- 1.5
@@ -128,14 +130,19 @@ set.seed(123)  # For reproducibility
 for (i in 1:N) {
     # Generate noise
     epsilon <- rnorm(length(X), mean = 0, sd = sigma)
+
     # Generate Y based on the linear model
     Y <- theta0 + theta1 * X + epsilon
+
     # Fit Ordinary Least Squares (OLS) model
     ols_model <- lm(Y ~ X)
+
     # Store OLS coefficients
     ols_coefficients[i, ] <- coef(ols_model)
+
     # Fit Weighted Least Squares (WLS) model
     wls_model <- lm(Y ~ X, weights = weights)
+
     # Store WLS coefficients
     wls_coefficients[i, ] <- coef(wls_model)
 }
@@ -143,6 +150,7 @@ for (i in 1:N) {
 # Analyze the results
 mean_ols_coefficients <- colMeans(ols_coefficients)
 mean_wls_coefficients <- colMeans(wls_coefficients)
+
 print("Mean OLS Coefficients:")
 print(mean_ols_coefficients)
 
