@@ -109,5 +109,49 @@ cat("OLS Intercept:", summary_ols$coefficients[1,1], "WLS Intercept:", summary_w
 cat("OLS Slope:", summary_ols$coefficients[2,1], "WLS Slope:", summary_wls$coefficients[2,1], "\n")
 
 
+# can also do the question this way
+# Set the parameters and data
+theta0 <- 3
+theta1 <- 1.5
+X <- c(1, 2, 5, 5.5, 9)
+weights <- c(0.1, 0.1, 0.35, 0.35, 0.1)
+sigma <- 1.2
+N <- 100
+
+# Initialize matrices to store the coefficients
+ols_coefficients <- matrix(NA, nrow = N, ncol = 2)  # To store intercept and slope for OLS
+wls_coefficients <- matrix(NA, nrow = N, ncol = 2)  # To store intercept and slope for WLS
+
+set.seed(123)  # For reproducibility
+
+# Simulation loop
+for (i in 1:N) {
+    # Generate noise
+    epsilon <- rnorm(length(X), mean = 0, sd = sigma)
+    # Generate Y based on the linear model
+    Y <- theta0 + theta1 * X + epsilon
+    # Fit Ordinary Least Squares (OLS) model
+    ols_model <- lm(Y ~ X)
+    # Store OLS coefficients
+    ols_coefficients[i, ] <- coef(ols_model)
+    # Fit Weighted Least Squares (WLS) model
+    wls_model <- lm(Y ~ X, weights = weights)
+    # Store WLS coefficients
+    wls_coefficients[i, ] <- coef(wls_model)
+}
+
+# Analyze the results
+mean_ols_coefficients <- colMeans(ols_coefficients)
+mean_wls_coefficients <- colMeans(wls_coefficients)
+print("Mean OLS Coefficients:")
+print(mean_ols_coefficients)
+
+print("Mean WLS Coefficients:")
+print(mean_wls_coefficients)
+
+# Plotting to compare the coefficient distributions
+par(mfrow = c(1, 2))
+hist(ols_coefficients[, 2], main = "Distribution of OLS Slopes", xlab = "Slope", col = "blue")
+hist(wls_coefficients[, 2], main = "Distribution of WLS Slopes", xlab = "Slope", col = "red")
 
 
