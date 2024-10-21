@@ -321,6 +321,44 @@ round(c(mean(mean.f), mean(sd.f)),3)
 round(c(mean(mean.g), mean(sd.g)),3)
 
 
+#-------------------------------------------------------------------------------
+# Question 2.9
+
+# original sample and analysis:
+plot(cars)
+olm = lm(cars$dist~cars$speed)
+abline(olm)
+olm
+summary(olm)
+
+# bootstrap linear regression:
+B = 1000
+n = nrow(cars) # sample size
+bcoefs = matrix(NA, nr=B, nc=2)
+for(b in 1:B){
+	ib = sample(c(1:n),size=n,replace=TRUE)
+	bcars = cars[ib,]
+	blm = lm(bcars$dist~bcars$speed)
+	# store bootstrap estimates...
+	bcoefs[b,] = as.numeric(blm$coef)
+}
+# Bootstrap estimation of standard errors
+# for intercept and slope:
+sd(bcoefs[,1])
+sd(bcoefs[,2])
+par(mfrow=c(2,2))
+boxplot(bcoefs[,1],main='intercept')
+abline(h=olm$coef[1])
+boxplot(bcoefs[,2],main='slope')
+abline(h=olm$coef[2])
+hist(bcoefs[,1],main='intercept')
+abline(v=olm$coef[1])
+hist(bcoefs[,2],main='slope')
+abline(v=olm$coef[2])
+
+olm$coef[2]
+mean(bcoefs[,2])
+
 
 
 
