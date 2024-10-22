@@ -1,7 +1,6 @@
 ##
 ## ST4060 / ST6040
 ## Tutorial exercises - Section 2
-## Eric Wolsztynski
 ##
 
 # ------------------------------------------------------------
@@ -358,6 +357,54 @@ abline(v=olm$coef[2])
 
 olm$coef[2]
 mean(bcoefs[,2])
+
+
+#Question 2.10
+# Set the seed for reproducibility
+set.seed(1)
+
+x = mtcars$disp
+y = mtcars$mpg
+# Assuming x and y vectors are defined and correspond to the data points
+n <- length(y) 
+
+# Fit the exponential model using non-linear least squares
+fit <- nls(y ~ exp(theta1 + theta2 * x), start = list(theta1 = 3, theta2 = -0.01))
+
+# Extract and print coefficient estimates
+coef_estimates <- summary(fit)$coefficients
+print(coef_estimates)
+
+# Plot the data and the model fit
+plot(x, y, pch = 19, col = "black", main = "Data and Model Fit", xlab = "X", ylab = "Y")
+lines(x, predict(fit, list(x = x)), col = "red")
+
+# Bootstrap function (manual implementation)
+bootstrap_results <- matrix(nrow = 100, ncol = 2)  # 100 resamples, storing results for theta1 and theta2
+
+for (i in 1:100) {
+  indices <- sample(1:n, replace = TRUE)  # Resampling indices
+  sample_data <- data.frame(x = x[indices], y = y[indices])
+  model <- nls(y ~ exp(theta1 + theta2 * x), data = sample_data, start = list(theta1 = 3, theta2 = -0.01))
+  bootstrap_results[i, ] <- coef(model)
+}
+
+# Calculate means and standard deviations for theta1 and theta2 from bootstrap
+bootstrap_means <- apply(bootstrap_results, 2, mean)
+bootstrap_sds <- apply(bootstrap_results, 2, sd)
+print(paste("Bootstrap Means: theta1 =", bootstrap_means[1], ", theta2 =", bootstrap_means[2]))
+print(paste("Bootstrap Standard Deviations: theta1 =", bootstrap_sds[1], ", theta2 =", bootstrap_sds[2]))
+
+# Calculate standard error for theta1
+theta1_se <- sd(bootstrap_results[, 1])
+print(paste("Standard Error for theta1:", theta1_se))
+
+# Calculate nonparametric 95% confidence interval for theta1
+theta1_ci_low <- quantile(bootstrap_results[, 1], probs = 0.025)
+theta1_ci_high <- quantile(bootstrap_results[, 1], probs = 0.975)
+print(paste("95% Confidence Interval for theta1: [", theta1_ci_low, ", ", theta1_ci_high, "]", sep=""))
+
+
 
 
 
