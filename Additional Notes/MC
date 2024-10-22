@@ -1,0 +1,6 @@
+EFFICIENCY
+Given two estimates theta_1 & theta_2, theta_1 is more efficient if var(theta_1) < var(theta_2)
+
+Importance sampling is an extension of the principle of Monte Carlo simulations. It consists in choosing an adequate
+sampling distribution (from which random realizations are generated) in order to approximate the expected value with
+“good” control on the estimation variance.
