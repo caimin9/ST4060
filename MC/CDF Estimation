@@ -81,3 +81,7 @@ print(round(rbind(x, cdf, Phi), 3))  # Print x, estimated CDF, and theoretical C
 
 # Display evaluated CI:
 print(cbind(round(x, 2), round(cbind(ciL, cdf, ciU), 4)))
+
+
+
+#######----------------Binomial----------------###################
