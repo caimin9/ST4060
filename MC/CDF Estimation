@@ -53,3 +53,31 @@ print(round(rbind(x, cdf, Phi), 3))
 
 # Display evaluated CI:
 print(cbind(round(x, 2), round(cbind(ciL, cdf, ciU), 4)))
+
+
+
+############ t-Distribution ############################################
+M <- 10000  # Number of Monte Carlo samples
+G <- 10     # Number of grid points
+df <- 5     # Degrees of freedom for the t-distribution
+x <- seq(-3, 3, length=G)  # Values at which to evaluate the CDF
+cdf <- numeric(G)
+vmc <- numeric(G)  # Variance of MC estimator
+ciU <- numeric(G)  # Upper bound of CI for MC estimator
+ciL <- numeric(G)  # Lower bound of CI for MC estimator
+
+for (i in 1:G) {
+  u <- rt(M, df=df)  # Generate random t-distribution samples
+  g <- (u <= x[i])  # Indicator function: 1 if u <= x[i], 0 otherwise
+  cdf[i] <- mean(g)  # Estimate CDF at x[i] as the mean of g
+  vmc[i] <- var(g) / M  # Compute variance of the Monte Carlo estimator
+  ciL[i] <- cdf[i] - 1.96 * sqrt(vmc[i])  # Lower bound of 95% CI
+  ciU[i] <- cdf[i] + 1.96 * sqrt(vmc[i])  # Upper bound of 95% CI
+}
+
+# Theoretic values using R's pt function for t-distribution
+Phi <- pt(x, df)
+print(round(rbind(x, cdf, Phi), 3))  # Print x, estimated CDF, and theoretical CDF
+
+# Display evaluated CI:
+print(cbind(round(x, 2), round(cbind(ciL, cdf, ciU), 4)))
