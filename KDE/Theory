@@ -1,0 +1,16 @@
+If the function is 
+K(uh) instead of K(u/h), the effect on the standard deviation is different.
+
+Horizontal scaling for K(uh):
+In K(uh), multiplying the input 
+u by h compresses the function horizontally. The larger the value of h, the more compressed the function becomes.
+
+Impact on standard deviation:
+When you scale the input by h, the standard deviation scales inversely. 
+
+So, if the original standard deviation of K(u) is σK, the standard deviation of K(uh) becomes σK/h.
+This happens because the function's spread decreases as h increases, and the standard deviation, which measures the spread, becomes smaller.
+
+Summary:
+For K(uh), the standard deviation becomes σK/h, meaning it decreases as h increases. 
+This is the opposite of K(u/h), where the standard deviation increases as h increases.
