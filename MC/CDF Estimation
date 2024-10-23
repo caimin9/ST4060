@@ -1,0 +1,55 @@
+#####################UNIFORM#################################
+M <- 10000
+G <- 10
+a <- 0  # Lower bound of the Uniform distribution
+b <- 5  # Upper bound of the Uniform distribution
+x <- seq(a, b, length=G)
+cdf <- numeric(G)
+vmc <- numeric(G) # variance of MC estimator
+ciU <- numeric(G) # Upper bound of CI for MC estimator
+ciL <- numeric(G) # Lower bound of CI for MC estimator
+
+for(i in 1:G){
+  u <- runif(M, min=a, max=b)
+  g <- (u <= x[i])
+  cdf[i] <- mean(g)  # mean of indicators gives the CDF estimate at x[i]
+  vmc[i] <- var(g) / M
+  ciL[i] <- cdf[i] - 1.96 * sqrt(vmc[i])
+  ciU[i] <- cdf[i] + 1.96 * sqrt(vmc[i])
+}
+
+# Theoretic values using uniform cdf function
+Phi <- punif(x, min=a, max=b)
+print(round(rbind(x, cdf, Phi), 3))
+
+# Display evaluated CI:
+print(cbind(round(x, 2), round(cbind(ciL, cdf, ciU), 4)))
+
+
+
+
+######################################EXPONENTIAL#########################################
+M <- 10000
+G <- 10
+lambda <- 1  # Rate parameter of the Exponential distribution
+x <- seq(0, 5, length=G)
+cdf <- numeric(G)
+vmc <- numeric(G) # variance of MC estimator
+ciU <- numeric(G) # Upper bound of CI for MC estimator
+ciL <- numeric(G) # Lower bound of CI for MC estimator
+
+for(i in 1:G){
+  u <- rexp(M, rate=lambda)
+  g <- (u <= x[i])
+  cdf[i] <- mean(g)  # mean of indicators gives the CDF estimate at x[i]
+  vmc[i] <- var(g) / M
+  ciL[i] <- cdf[i] - 1.96 * sqrt(vmc[i])
+  ciU[i] <- cdf[i] + 1.96 * sqrt(vmc[i])
+}
+
+# Theoretic values using exponential cdf function
+Phi <- pexp(x, rate=lambda)
+print(round(rbind(x, cdf, Phi), 3))
+
+# Display evaluated CI:
+print(cbind(round(x, 2), round(cbind(ciL, cdf, ciU), 4)))
