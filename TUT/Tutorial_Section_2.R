@@ -130,6 +130,14 @@ getwd()
 setwd("/Volumes/macdata/teaching/ST3060/practicals")
 source("ST3060_toolbox.R") # import all functions defined in the file
 
+
+#Diff between rlm and lm
+rlm is less sensitive to outliers; uses iteratively reweighted least squares; uses m estimation
+
+
+
+
+
 # 1) Initialisation of vectors and parameters
 
 N = 50                          # Sample size
