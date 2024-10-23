@@ -14,6 +14,7 @@ print(exp(-2) - exp(-4))
 
 # ------------------------------------------------------------
 # Question 2.2
+#This is for Standard Normal
 
 M <- 10000
 G <- 10
@@ -43,6 +44,35 @@ print( round(rbind(x, cdf, Phi), 3) )
 # Display evaluated CI:
 print( cbind(round(x,2), round(cbind(ciL, cdf, ciU),4)) )
 # Note that something should be done to truncate the CI within (0,1)!
+
+
+#This is for the Gamma Distn
+M <- 10000
+G <- 10
+x <- seq(0.1, 10, length=G)
+alpha <- 2  # Shape parameter of the Gamma distribution
+beta <- 1   # Rate parameter of the Gamma distribution
+cdf <- numeric(G)
+vmc <- numeric(G) # variance of MC estimator
+ciU <- numeric(G) # Upper bound of CI for MC estimator
+ciL <- numeric(G) # Lower bound of CI for MC estimator
+
+for(i in 1:G){
+  u <- rgamma(M, shape=alpha, rate=beta)
+  g <- (u <= x[i])  # Integrating the indicator function over gamma density
+  cdf[i] <- mean(g) # mean of indicators gives the CDF estimate at x[i]
+  vmc[i] <- var(g) / M
+  ciL[i] <- cdf[i] - 1.96 * sqrt(vmc[i])
+  ciU[i] <- cdf[i] + 1.96 * sqrt(vmc[i])
+}
+
+# Theoretic values using pgamma
+Phi <- pgamma(x, shape=alpha, rate=beta)
+print(round(rbind(x, cdf, Phi), 3))
+
+# Display evaluated CI:
+print(cbind(round(x, 2), round(cbind(ciL, cdf, ciU), 4)))
+
 
 # ------------------------------------------------------------
 # Question 2.3
