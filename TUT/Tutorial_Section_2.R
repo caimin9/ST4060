@@ -320,6 +320,41 @@ round(c(mean(mean.f), mean(sd.f)),3)
 round(c(mean(mean.g), mean(sd.g)),3)
 
 
+#----------------------------------------------------------------------------
+
+#Question 2.8
+# Load required libraries
+library(bootstrap)
+library(boot)
+
+# Load the law school dataset
+data(law)
+
+# Calculate the sample correlation
+sample_cor <- cor(law$LSAT, law$GPA)
+
+# Define a function to compute correlation for bootstrapping
+cor_func <- function(data, indices) {
+  cor(data$LSAT[indices], data$GPA[indices])
+}
+
+# Perform bootstrap resampling
+set.seed(4060)  # For reproducibility
+boot_results <- boot(data = law, statistic = cor_func, R = 10000)
+
+# Print results
+cat("Sample correlation:", sample_cor, "\n")
+cat("Bootstrap estimate of standard error:", sd(boot_results$t), "\n")
+
+# Plot the bootstrap distribution
+hist(boot_results$t, main = "Bootstrap Distribution of Correlation", 
+     xlab = "Correlation", breaks = 50)
+
+# Calculate 95% confidence interval
+ci <- boot.ci(boot_results, type = "perc")
+cat("95% Confidence Interval:", ci$percent[4], "to", ci$percent[5], "\n")
+
+
 #-------------------------------------------------------------------------------
 # Question 2.9
 
