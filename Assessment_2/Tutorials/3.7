@@ -28,3 +28,95 @@ Variable Selection: The exclusion of certain variables in models (like BMI and C
 Cross-Validation: It is unclear if cross-validation was used to calibrate the regularization parameters, which is critical for assessing the robustness and generalizability of the regularization impact.
 
 In summary, the analysis of these models demonstrates the significance of choosing the right regularization technique based on the dataset characteristics and the specific analytical needs. Regularization not only helps in managing overfitting and multicollinearity but also aids in model interpretation by highlighting the most influential variables
+
+
+
+
+
+
+
+
+
+
+
+#-------------------------------------------------
+1. Effect of Each Regularisation Scheme
+GLM (General Linear Model):
+
+This is the standard linear regression model without any form of regularization.
+All predictors are included with their coefficients estimated to minimize the residual sum of squares.
+Coefficients are as follows: Age (0.200), Waist (0.557), Cholesterol (0.003), BMI (0.030).
+Ridge Regression:
+
+Applies L2 regularization, penalizing the sum of the squares of the coefficients.
+All variables remain in the model, but their coefficients are shrunk towards zero.
+Notably, Waist circumference appears to be excluded or its coefficient reduced significantly (since it's not listed).
+Coefficients for Cholesterol (0.356) and BMI (0.378) have increased compared to GLM, indicating adjustments due to penalization.
+Elastic Net (e-net):
+
+Combines L1 (LASSO) and L2 (Ridge) regularization penalties.
+Capable of both shrinking coefficients and performing variable selection.
+Waist circumference is not included, suggesting its coefficient has been reduced to zero.
+Coefficient for BMI (0.048) is reduced compared to Ridge regression.
+LASSO:
+
+Employs L1 regularization, penalizing the sum of the absolute values of the coefficients.
+Can reduce some coefficients to exactly zero, effectively removing variables from the model.
+Waist circumference and BMI are excluded (coefficients are zero).
+Cholesterol has a higher coefficient (0.482) compared to GLM and e-net, indicating its increased relative importance in the model.
+Summary of Effects:
+
+Variable Inclusion/Exclusion:
+Regularization techniques have led to the exclusion of certain variables (e.g., Waist and BMI in LASSO).
+Coefficient Shrinkage:
+Regularization schemes shrink coefficients to prevent overfitting, with LASSO potentially setting some to zero.
+Model Complexity:
+Models become simpler from GLM to LASSO due to regularization reducing the number of predictors.
+2. Increase in Model Fit Error
+Error Metrics:
+GLM: 139.76
+Ridge: 141.96
+e-net: 143.26
+LASSO: 143.26
+Interpretation:
+
+Trade-off Between Bias and Variance:
+As regularization increases, the training error slightly increases due to added bias.
+Model Generalization:
+Slight increases in training error may lead to better generalization on unseen data.
+Error Consistency:
+Errors for e-net and LASSO are the same, suggesting similar levels of fit.
+3. Potential Issues or Challenges Within the Dataset
+Multicollinearity:
+High correlation among predictors (e.g., Waist circumference and BMI) may be present.
+Regularization methods help address multicollinearity by penalizing correlated coefficients.
+Sample Size:
+With only 75 subjects, overfitting is a concern in complex models like GLM.
+Regularization reduces overfitting risk by simplifying the model.
+Variable Importance:
+Exclusion of variables like Waist and BMI in some models indicates they may not provide unique information beyond what is captured by other predictors.
+4. Overall Impact of, or Necessity for Regularisation for this Data
+Improved Model Simplicity:
+Regularization leads to simpler models by reducing coefficients and excluding less important variables.
+Enhanced Generalization:
+By preventing overfitting, regularized models are likely to perform better on new data.
+Handling Multicollinearity:
+Regularization effectively manages correlated predictors, improving model stability.
+Necessity:
+Given the dataset's characteristics (small sample size and potential multicollinearity), regularization is beneficial.
+5. Limitations of the Output Presented
+Lack of Statistical Significance Measures:
+No p-values or confidence intervals are provided to assess the significance of coefficients.
+Unspecified Error Type:
+The error metric is not defined (e.g., MSE, RMSE, MAE), making it hard to interpret model performance.
+Absence of Model Diagnostics:
+No information on residual analysis, heteroscedasticity, or normality of errors.
+No Cross-Validation Details:
+It's unclear if cross-validation was used to select regularization parameters, which is essential for model tuning.
+Scaling of Variables:
+Regularization techniques are sensitive to the scale of variables; there's no mention of whether variables were standardized.
+Limited Predictor Information:
+The dataset may contain other relevant variables not included in the analysis, potentially impacting model accuracy.
+Conclusion:
+
+Regularization techniques have a significant impact on the regression models applied to the blood pressure dataset. They reduce model complexity, address multicollinearity, and potentially improve generalization to new data. While there's a slight increase in model fit error, the trade-off may be acceptable for the benefits gained. However, the limitations in the output—such as missing statistical measures and model diagnostics—hinder a comprehensive evaluation. Further analysis with detailed metrics and validation methods is recommended to fully understand the models' performance and reliability.
