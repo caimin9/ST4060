@@ -1,4 +1,6 @@
-The results from the four linear regression models fitted to the "Blood Pressure.txt" dataset—General Linear Model (GLM), Ridge regression, Elastic Net (e-net), and LASSO—are intriguing in terms of their implications on the effects of different regularisation schemes, model fit errors, and potential dataset issues. Here's an analysis based on the results presented:
+The results from the four linear regression models fitted to the "Blood Pressure.txt" dataset—General Linear Model (GLM), Ridge regression, Elastic Net (e-net), 
+and LASSO—are intriguing in terms of their implications on the effects of different regularisation schemes, model fit errors, and potential dataset issues. 
+Here's an analysis based on the results presented:
 
 1. Effect of Each Regularisation Scheme:
 GLM (General Linear Model): This model likely fits without any regularization. It incorporates all predictors with their coefficients fully estimated by maximizing fit to the data. This can sometimes lead to overfitting, especially in datasets with many predictors or multicollinearity.
@@ -11,13 +13,18 @@ LASSO: Implements L1 regularization, which penalizes the sum of the absolute val
 
 2. Increase in Model Fit Error:
 The errors (presumably MSE or similar metrics) increase across the models from GLM to LASSO. This increment could be indicative of the trade-off between bias and variance, where more regularisation introduces more bias to reduce variance (overfitting risk).
+
 3. Potential Issues or Challenges Within the Dataset:
 Multicollinearity: Given that regularization generally improves the model fit in the presence of multicollinearity, the fact that Ridge and Elastic Net perform adjustments suggests potential multicollinearity among predictors.
 Sample Size: With only 75 subjects and multiple predictors, there is a risk of overfitting, particularly with the GLM.
+
 4. Overall Impact of, or Necessity for Regularisation for this Data:
 Regularization appears necessary given the increase in coefficients' stability and potential overfitting reduction. Models with regularization (Ridge, Elastic Net, LASSO) show adjusted coefficients that likely generalize better on new, unseen data compared to the GLM.
+
 5. Limitations of the Output Presented:
 Detailed Model Metrics: While errors are mentioned, other vital statistics (like R², adjusted R², F-statistics, AIC/BIC for model comparison) are absent, which could help in better understanding model performance.
 Variable Selection: The exclusion of certain variables in models (like BMI and Cholesterol in LASSO) needs further investigation to understand if they are indeed unnecessary, or if their exclusion could lead to omitted variable bias.
+
 Cross-Validation: It is unclear if cross-validation was used to calibrate the regularization parameters, which is critical for assessing the robustness and generalizability of the regularization impact.
+
 In summary, the analysis of these models demonstrates the significance of choosing the right regularization technique based on the dataset characteristics and the specific analytical needs. Regularization not only helps in managing overfitting and multicollinearity but also aids in model interpretation by highlighting the most influential variables
