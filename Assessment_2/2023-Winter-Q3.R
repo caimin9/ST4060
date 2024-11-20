@@ -155,3 +155,55 @@ print(paste("5-Fold CV RMSE for Linear Model:", round(rmse_lm_cv, 3)))
 
 #The P-spline model tends to provide a smoother fit to the data due to its smoothing parameter, which can result in better generalization performance as indicated by the lower RMSE compared to the linear model.
 #Cross-validation is a valuable tool for assessing the predictive performance of a model and helps in selecting models that generalize well to unseen data.
+
+
+
+
+
+#Alt alt approach
+
+
+predictions_lm <- numeric(n)
+rmse_aa = numeric(K)
+
+
+R = 0
+K = 5
+errsR = NULL
+folds = cut(1:n, K, labels=FALSE)
+
+for(r in 1:R){
+  # shuffle the dataset every time 
+  # a k-fold CV is initiated:
+  # (otherwise we re-use exactly the same
+  # fold!!)
+  is = sample(1:n,n)
+  x = x[is]
+  y = y[is]
+  # then perform k-fold CV:
+  for(k in 1:K){
+    # Training and test indices
+    train_indices <- which(folds != k)
+    test_indices <- which(folds == k)
+    
+    # Training data
+    x_train <- x[train_indices]
+    y_train <- y[train_indices]
+    
+    # Test data
+    x_test <- x[test_indices]
+    y_test <- y[test_indices]
+    
+    # Fit linear model
+    lm_cv_fit <- lm(y_train ~ x_train)
+    
+    # Generate predictions
+    predictions <- predict(lm_cv_fit, newdata = data.frame(x_train = x_test) )
+    
+    # Store predictions
+    predictions_lm[test_indices] <- predictions
+    rmse_aa[k] = RMSE(y_test,predictions)
+  }
+}
+mean(rmse_aa)
+
