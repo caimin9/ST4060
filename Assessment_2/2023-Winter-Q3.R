@@ -87,6 +87,11 @@ K <- 5
 folds <- sample(1:K, n, replace = TRUE)
 predictions_cv <- numeric(n)
 
+# Define RMSE function
+RMSE <- function(actual, predicted) {
+  sqrt(mean((actual - predicted)^2))
+}
+
 #cv
 for (k in 1:K) {
   # Training and test indices
@@ -109,6 +114,7 @@ for (k in 1:K) {
   
   # Store predictions
   predictions_cv[test_indices] <- predictions
+  rmse[k] = RMSE(y_test,predictions)
 }
 
 # Define RMSE function
@@ -116,9 +122,6 @@ RMSE <- function(actual, predicted) {
   sqrt(mean((actual - predicted)^2))
 }
 
-# Calculate RMSE
-rmse_cv <- RMSE(y, predictions_cv)
-print(paste("5-Fold CV RMSE for P-spline:", round(rmse_cv, 3)))
 
 
 
