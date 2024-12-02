@@ -1,0 +1,27 @@
+#2022 Question 1
+set.seed(4060)
+M =1000
+N =100
+ps =seq(.1,.9,by =.1)
+
+mu =std_dev =  matrix(0,nrow = M, ncol =length(ps))
+j =1
+mean_store = var_store = numeric(length(ps))
+for(p in ps){
+  
+for(i in 1:M){
+  term =rbinom(N,size =5, prob =p)
+  mu[i,j] = mean(term)
+  std_dev[i,j] = var(term)
+  
+  
+}
+
+mean_store[j] = mean(mu[,j])
+var_store[j] = mean(std_dev[,j])
+j = j+1  
+}
+
+
+mean_store
+var_store
