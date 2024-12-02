@@ -1,0 +1,5 @@
+
+rmse = function(y,y_predicted){
+  RMSE = sqrt(mean((y-y_predicted)^2))
+  return(RMSE)
+}
