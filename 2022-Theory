@@ -1,0 +1,14 @@
+2022 Q1): Based on the above results, briefly discuss whether S could be thought to follow a Poisson
+binomial distribution with E(S) = ∑5i=1 pi = 5p and Var(S) = ∑5i=1(1−pi)pi = 5p(1−p).
+
+2022 Q2):Briefly discuss whether the normal approximation is a reasonable approach for calculation
+of the confidence interval for the p-value of the correlation test.
+
+2022 Q3)
+e) Based on (c) and (d), briefly discuss which model better describes the residuals, and what this tells you about your GLM fit obtained in (a)
+g) Briefly discuss whether you would use the GLM fit from (a) or the B-spline from (f) to analyse the data (x,y), using relevant output to support your opinion.
+
+2022Q4)
+e) Based on the above results, briefly comment on each model performance and indicate whether one model is preferable over the other, and why
+
+2021
